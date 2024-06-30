@@ -3,7 +3,7 @@
 
 Allows you to see all visible files on a website, ignoring the `robots.txt` file
 
-> ![NOTE]
+> [!NOTE]
 > `crawler.py` require yaml:
 > `pip install pyyaml`
 
