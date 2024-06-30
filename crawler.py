@@ -1,12 +1,28 @@
 import sys
+import yaml
 import requests
+
 from bs4 import BeautifulSoup
 
 links = []
 files = []
 
+with open("files_extensions.yml") as yml:
+    files_extensions = yaml.safe_load(yml)
 
-def crawl(source: str, url: str = None):
+
+def wtf_is_this_file(file: str) -> str:
+    file = file.lower().split(".")[-1]
+
+    for x in files_extensions["files"]:
+        for y in files_extensions["files"][x]:
+            if y == file:
+                return x
+
+    return "File"
+
+
+def crawl(source: str, url: str = None) -> None:
     url = source if url == None else url
 
     try:
@@ -15,15 +31,17 @@ def crawl(source: str, url: str = None):
         return
 
     links.append(url)
-    print(f"\r[!] Page found ({req.status_code}): {url}" + " " * len(source))
+    print(f"\r[!] {wtf_is_this_file(url)} found ({req.status_code}): {url}" + " " * len(source))
     print(f"\rWe found {len(links)} pages from source: '{source}'", end="")
 
-    soup = BeautifulSoup(req.text.lower(), "html.parser")
-    file_links = [link.get("href") for link in soup.find_all("a")]
     res = []
+    soup = BeautifulSoup(req.text.lower(), "html.parser")
+
+    file_links = [link.get("href") for link in soup.find_all(True)]
+    file_links += [link.get("src") for link in soup.find_all(True)]
 
     for item in file_links:
-        if item in files:
+        if item in files or item == None:
             pass
         elif not item.startswith("https://") and not item.startswith("mailto"):
             files.append(item)
@@ -32,7 +50,7 @@ def crawl(source: str, url: str = None):
             res.append(item)
 
     for result in res:
-        if result not in links and result.startswith(source):
+        if result.startswith(source) and result not in links:
             crawl(result[: result.rfind("/")], result)
 
 

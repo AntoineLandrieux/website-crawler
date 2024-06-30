@@ -1,0 +1,46 @@
+
+files:
+
+  "Image":
+    - png
+    - jpg
+    - gif
+    - svg
+    - webp
+    - jpeg
+  
+  "Sound":
+    - mp3
+    - ogg
+    - mid
+    - wav
+  
+  "Video":
+    - webm
+    - mpg
+    - mp2
+    - mpeg
+    - mpv
+    - mp4
+    - m4p
+    - m4v
+  
+  "Page":
+    - html
+    - htm
+    - php
+  
+  "Code":
+    - css
+    - js
+    - sass
+    - xml
+  
+  "Document":
+    - pdf
+    - doc
+    - docx
+    - ppt
+    - pptx
+    - xls
+    - xlsx
