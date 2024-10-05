@@ -1,8 +1,17 @@
-import sys
-import yaml
-import requests
 
-from bs4 import BeautifulSoup
+try:
+
+    import sys
+    import yaml
+    import requests
+
+    from bs4 import BeautifulSoup
+
+except (ImportError, ImportWarning):
+
+    print("ERROR: sys, yaml, requests and bs4 are required.")
+    exit(1)
+
 
 links = []
 files = []
@@ -31,8 +40,8 @@ def crawl(source: str, url: str = None) -> None:
         return
 
     links.append(url)
-    print(f"\r[!] {wtf_is_this_file(url)} found ({req.status_code}): {url}" + " " * len(source))
-    print(f"\rWe found {len(links)} pages from source: '{source}'", end="")
+    print(f"\r[!] {wtf_is_this_file(url)} found ({req.status_code}): {url} ")
+    print(f"\r{len(links)} files were found", end="", file=sys.stderr)
 
     res = []
     soup = BeautifulSoup(req.text.lower(), "html.parser")
@@ -54,7 +63,7 @@ def crawl(source: str, url: str = None) -> None:
             crawl(result[: result.rfind("/")], result)
 
 
-def main():
+if __name__ == "__main__":
     print(rf"""
  __      __   _       _ _          ___                 _
  \ \    / /__| |__ __(_) |_ ___   / __|_ _ __ ___ __ _| |___ _ _
@@ -63,13 +72,9 @@ def main():
  Antoine LANDRIEUX (https://github.com/AntoineLandrieux/website-crawler)
 """)
 
-    if len(sys.argv) < 2:
-        print("USAGE: py crawler.py <link>")
-        print("ex   : py crawler.py https://www.galaxy-studio-web.fr")
-        return
+    if len(sys.argv) != 2:
+        print("USAGE: py crawler.py <link>", file=sys.stderr)
+        print("ex   : py crawler.py https://www.galaxy-studio-web.fr", file=sys.stderr)
+        exit(1)
 
     crawl(sys.argv[1])
-
-
-if __name__ == "__main__":
-    main()

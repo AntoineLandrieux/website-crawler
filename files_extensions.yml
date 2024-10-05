@@ -2,6 +2,7 @@
 files:
 
   "Image":
+    - ico
     - png
     - jpg
     - gif
