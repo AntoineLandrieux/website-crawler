@@ -44,7 +44,7 @@ def crawl(source: str, url: str = None) -> None:
     print(f"\r{len(links)} files were found", end="", file=sys.stderr)
 
     res = []
-    soup = BeautifulSoup(req.text.lower(), "html.parser")
+    soup = BeautifulSoup(req.text, "html.parser")
 
     file_links = [link.get("href") for link in soup.find_all(True)]
     file_links += [link.get("src") for link in soup.find_all(True)]
